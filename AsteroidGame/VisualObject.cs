@@ -19,7 +19,7 @@ namespace AsteroidGame
             _Direction = Direction;
             _Size = Size;
         }
-        public void Drav(Graphics g)
+        public void Draw(Graphics g)
         {
             g.DrawEllipse(Pens.White, _Position.X,
                 _Position.Y, _Size.Width, _Size.Height);
