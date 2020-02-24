@@ -10,6 +10,8 @@ namespace TestConsole
     {
         private Vector2D _Position = new Vector2D(5, 7);
 
+        public Vector2D Position { get => _Position; set => _Position = value; }
+
         public SpaceShip()
         {
 
@@ -26,8 +28,8 @@ namespace TestConsole
         private double _X;
         private double _Y;
 
-        public double X { get; set; }
-        public double Y { get; set; }
+        public double X { get => _X; set => _X = value; }
+        public double Y { get => _Y; set => _Y = value; }
         public double Length => Math.Sqrt(X * X + Y * Y);
 
         public Vector2D(double X, double Y)
