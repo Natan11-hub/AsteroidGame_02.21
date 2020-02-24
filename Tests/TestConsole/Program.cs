@@ -29,6 +29,16 @@ namespace TestConsole
             var space_ship2 = space_ship;
             space_ship.Position = new Vector2D(150, -210);
 
+            var v2 = v1;
+
+            v1.X = 7;
+            v1.Y = -14;
+
+            var v3 = v1 + v2;
+            var v4 = v2 - v1;
+            var v5 = v4 + 8;
+            var v6 = -v5;
+
             Console.ReadLine();
         }
     }
