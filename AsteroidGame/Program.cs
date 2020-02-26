@@ -16,7 +16,19 @@ namespace AsteroidGame
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            Form form = new Form();
+
+            form.Width = 800;
+            form.Height = 600;
+
+            form.Show();
+
+            Game.Initialize(form);
+            Game.Load();
+            Game.Draw();
+
+            Application.Run(form);
         }
     }
 }
