@@ -12,6 +12,12 @@ namespace AsteroidGame
         protected Point _Position;
         protected Point _Direction;
         protected Size _Size;
+        //public Image image = Image.FromFile("star.jpg");
+        double x = 100f;
+        double y = 100f;
+
+        RectangleF srcRect = new RectangleF(50.0F, 50.0F, 150.0F, 150.0F);
+        GraphicsUnit units = GraphicsUnit.Pixel;
 
         public VisualObject(Point Position, Point Direction, Size Size)
         {
@@ -23,6 +29,10 @@ namespace AsteroidGame
         {
             g.DrawEllipse(Pens.White, _Position.X,
                 _Position.Y, _Size.Width, _Size.Height);
+        }
+        public void DrawIm(Image image, float x, float y, RectangleF srcRect, GraphicsUnit srcUnit)
+        {
+            DrawIm(image, x, y, srcRect, units);
         }
         public virtual void Update()
         {

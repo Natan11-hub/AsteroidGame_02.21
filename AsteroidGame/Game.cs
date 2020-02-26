@@ -15,6 +15,7 @@ namespace AsteroidGame
 
         public static int Width { get; set; }
         public static int Height { get; set; }
+        
         static Game()
         {
 
@@ -41,22 +42,31 @@ namespace AsteroidGame
         }
 
         private static VisualObject[] __GameObjects;
+        private static VisualObject[] __GameObjectsSmall;
         public static void Load()
         {
-            __GameObjects = new VisualObject[30];
-            for(var i = 0; i < __GameObjects.Length / 2; i++)
+            __GameObjects = new VisualObject[40];
+            for (var i = 0; i < __GameObjects.Length / 2; i++)
             {
                 __GameObjects[i] = new VisualObject(
-                new Point(600, i * 20), 
-                new Point(15 - i, 20 - i), 
+                new Point(600, i * 20),
+                new Point(15 - i, 20 - i),
                 new Size(20, 20));
             }
             for (var i = __GameObjects.Length / 2; i < __GameObjects.Length; i++)
             {
                 __GameObjects[i] = new Star(
-                new Point(600, i * 20),
-                new Point(- i, 20 - i),
+                new Point(600, (-15 + i) * 25),
+                new Point( - i, 20 - i),
                 20);
+            }
+            __GameObjectsSmall = new VisualObject[20];
+            for (var i = 0; i < __GameObjectsSmall.Length; i++)
+            {
+                __GameObjectsSmall[i] = new Comet(
+                new Point(900, (5 + i) * 25),
+                new Point( - i, 20 - i),
+                7);
             }
         }
         public static void Draw()
@@ -69,12 +79,16 @@ namespace AsteroidGame
 
             foreach (var visual_object in __GameObjects)
                 visual_object.Draw(g);
+            foreach (var visual_object in __GameObjectsSmall)
+                visual_object.Draw(g);
 
             __Buffer.Render();
         }
         public static void Update()
         {
             foreach (var visual_object in __GameObjects)
+                visual_object.Update();
+            foreach (var visual_object in __GameObjectsSmall)
                 visual_object.Update();
         }
     }
