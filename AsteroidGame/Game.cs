@@ -47,27 +47,23 @@ namespace AsteroidGame
         {
             __GameObjects = new VisualObject[40];
             for (var i = 0; i < __GameObjects.Length / 2; i++)
-            {
                 __GameObjects[i] = new VisualObject(
                 new Point(600, i * 20),
                 new Point(15 - i, 20 - i),
                 new Size(20, 20));
-            }
             for (var i = __GameObjects.Length / 2; i < __GameObjects.Length; i++)
-            {
                 __GameObjects[i] = new Star(
                 new Point(600, (-15 + i) * 25),
                 new Point( - i, 20 - i),
                 20);
-            }
             __GameObjectsSmall = new VisualObject[20];
             for (var i = 0; i < __GameObjectsSmall.Length; i++)
-            {
                 __GameObjectsSmall[i] = new Comet(
                 new Point(900, (5 + i) * 25),
                 new Point( - i, 20 - i),
                 7);
-            }
+            //var image = Properties.Resources.Star;
+            //var image_object = new ImageObject(new Point(4, 7), new Point(-4, 6), new Size(20,20), image);
         }
         public static void Draw()
         {
