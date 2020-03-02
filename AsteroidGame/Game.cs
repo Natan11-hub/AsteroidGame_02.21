@@ -29,6 +29,8 @@ namespace AsteroidGame
         {
             Width = form.Width;
             Height = form.Height;
+            if (Width > 1000 || Height > 1000 || Width < 0 || Height < 0)
+                throw new ArgumentOutOfRangeException("Нарушен размер приложения!");
 
             __Context = BufferedGraphicsManager.Current;
             Graphics g = form.CreateGraphics();

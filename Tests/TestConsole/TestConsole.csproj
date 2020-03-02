@@ -43,18 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gamer.cs" />
-    <Compile Include="Loggers\DebugLogger.cs" />
-    <Compile Include="Loggers\FileLogger.cs" />
-    <Compile Include="Loggers\ILogger.cs" />
-    <Compile Include="Loggers\ListLogger.cs" />
-    <Compile Include="Loggers\Logger.cs" />
-    <Compile Include="Loggers\TraceLogger.cs" />
-    <Compile Include="Loggers\VisualStudioOutputLogger.cs" />
+    <Compile Include="Worker.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpaceShip.cs" />
     <Compile Include="Vector2D.cs" />
+    <Compile Include="WorkerPayHour.cs" />
+    <Compile Include="WorkerPayMonth.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
