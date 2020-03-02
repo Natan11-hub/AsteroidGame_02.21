@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace AsteroidGame.VisualObjects
 {
-    public class StarIm : ImageObject, , ICollision
+    public abstract class CollisionObject : VisualObject, ICollision
     {
-        public StarIm(Point Position, Point Direction, int ImageSize) :
-            base(Position, Direction, new Size(ImageSize, ImageSize), Properties.Resources.Star)
+        protected CollisionObject(Point Position, Point Direction, Size Size) : base(Position, Direction, Size)
         {
-
         }
 
         public bool CheckCollision(ICollision obj) => Rect.IntersectsWith(obj.Rect);
