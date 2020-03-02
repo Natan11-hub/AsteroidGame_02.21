@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AsteroidGame.VisualObjects
 {
-    public class StarIm : ImageObject, , ICollision
+    public class StarIm : ImageObject, ICollision
     {
         public StarIm(Point Position, Point Direction, int ImageSize) :
             base(Position, Direction, new Size(ImageSize, ImageSize), Properties.Resources.Star)

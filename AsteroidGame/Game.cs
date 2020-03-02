@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AsteroidGame.VisualObjects;
+using AsteroidGame.VisualObjects.Interfaces;
 
 namespace AsteroidGame
 {
@@ -96,7 +97,7 @@ namespace AsteroidGame
             //g.FillEllipse(Brushes.Red, new Rectangle(100,50,70, 120));
 
             foreach (var visual_object in __GameObjects)
-                visual_object.Draw(g);
+                visual_object?.Draw(g);
 
             __Bullet.Draw(g);
             //foreach (var visual_object in __GameObjectsSmall)
@@ -107,12 +108,27 @@ namespace AsteroidGame
         public static void Update()
         {
             foreach (var visual_object in __GameObjects)
-                visual_object.Update();
+                visual_object?.Update();
+
             __Bullet.Update();
             if (__Bullet.Position.X > Width)
-                __Bullet = new Bullet(300);
+                __Bullet = new Bullet(new Random().Next(Width));
             //foreach (var visual_object in __GameObjectsSmall)
             //    visual_object.Update();
+            for(var i = 0; i < __GameObjects.Length; i++)
+            {
+                var obj = __GameObjects[i];
+                if (obj is ICollision)
+                {
+                    var collision_object = (ICollision)obj;
+                    if (__Bullet.CheckCollision(collision_object))
+                    {
+                        __Bullet = new Bullet(new Random().Next(Width));
+                        __GameObjects[i] = null;
+                        MessageBox.Show("Объект уничтожен!", "Столконовение", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+            }
         }
     }
 }
