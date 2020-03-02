@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace AsteroidGame
+namespace AsteroidGame.VisualObjects
 {
-    class VisualObject
+    public abstract class VisualObject
     {
         protected Point _Position;
         protected Point _Direction;
@@ -19,17 +19,13 @@ namespace AsteroidGame
         RectangleF srcRect = new RectangleF(50.0F, 50.0F, 150.0F, 150.0F);
         GraphicsUnit units = GraphicsUnit.Pixel;
 
-        public VisualObject(Point Position, Point Direction, Size Size)
+        protected VisualObject(Point Position, Point Direction, Size Size)
         {
             _Position = Position;
             _Direction = Direction;
             _Size = Size;
         }
-        public virtual void Draw(Graphics g)
-        {
-            g.DrawEllipse(Pens.White, _Position.X,
-                _Position.Y, _Size.Width, _Size.Height);
-        }
+        public abstract void Draw(Graphics g);
         public void DrawIm(Image image, float x, float y, RectangleF srcRect, GraphicsUnit srcUnit)
         {
             DrawIm(image, x, y, srcRect, units);
