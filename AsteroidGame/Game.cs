@@ -45,6 +45,7 @@ namespace AsteroidGame
         }
 
         private static VisualObject[] __GameObjects;
+        private static Bullet __Bullet;
         //private static VisualObject[] __GameObjectsSmall;
         public static void Load()
         {
@@ -84,28 +85,7 @@ namespace AsteroidGame
                     starIm_size));
 
             __GameObjects = game_objects.ToArray();
-
-
-            //__GameObjects = new VisualObject[40];
-            ////for (var i = 0; i < __GameObjects.Length / 2; i++)
-            ////    __GameObjects[i] = new VisualObject(
-            ////    new Point(600, i * 20),
-            ////    new Point(15 - i, 20 - i),
-            ////    new Size(20, 20));
-            //for (var i = __GameObjects.Length / 2; i < __GameObjects.Length; i++)
-            //    __GameObjects[i] = new Star(
-            //    new Point(600, (-15 + i) * 25),
-            //    new Point( - i, 20 - i),
-            //    20);
-            //__GameObjectsSmall = new VisualObject[20];
-            //for (var i = 0; i < __GameObjectsSmall.Length; i++)
-            //    __GameObjectsSmall[i] = new Comet(
-            //    new Point(900, (5 + i) * 25),
-            //    new Point( - i, 20 - i),
-            //    7);
-            //var image = Properties.Resources.Star;
-            //var image_object = new ImageObject(new Point(4, 7), new Point(-4, 6), new Size(20,20), image);
-
+            __Bullet = new Bullet(200);
         }
         public static void Draw()
         {
@@ -117,6 +97,8 @@ namespace AsteroidGame
 
             foreach (var visual_object in __GameObjects)
                 visual_object.Draw(g);
+
+            __Bullet.Draw(g);
             //foreach (var visual_object in __GameObjectsSmall)
             //    visual_object.Draw(g);
 
@@ -126,6 +108,9 @@ namespace AsteroidGame
         {
             foreach (var visual_object in __GameObjects)
                 visual_object.Update();
+            __Bullet.Update();
+            if (__Bullet.Position.X > Width)
+                __Bullet = new Bullet(300);
             //foreach (var visual_object in __GameObjectsSmall)
             //    visual_object.Update();
         }

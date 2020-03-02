@@ -5,4 +5,3 @@
         public abstract void Log(string Message, string Category);
     }
 }
-}

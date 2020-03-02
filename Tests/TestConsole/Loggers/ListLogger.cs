@@ -1,4 +1,7 @@
-﻿namespace TestConsole
+﻿using System;
+using System.Collections.Generic;
+
+namespace TestConsole
 {
     public class ListLogger : Logger
     {
@@ -9,5 +12,4 @@
             _Messages.Add($"({DateTime.Now}){Message}");
         }
     }
-}
 }
