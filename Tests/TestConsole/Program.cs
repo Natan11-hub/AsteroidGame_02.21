@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,92 +11,116 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            //var gamer = new Gamer("Gamer 1", new DateTime(1998, 12, 5));
-
-            //Gamer[] gamers = new Gamer[100];
-            //for (int i = 0; i < gamers.Length; i++)
+            //TraceLogger trace_logger = null;
+            //try
             //{
-            //    var g = new Gamer(string.Format("Gamer {0}", i + 1), DateTime.Now.Subtract(TimeSpan.FromDays(365 * (i + 18))));
-            //    gamers[i] = g;
+            //    trace_logger.Log("123");
+            //}
+            //finally
+            //{
+            //    trace_logger.Dispose();
 
             //}
-            //foreach (var g in gamers)
-            //    g.SayYourName();
+            using (var trace_logger = new TraceLogger())
+                trace_logger.Log("123");
 
-            //var space_ship = new SpaceShip(new Vector2D(5, 7));
 
-            //var v1 = new Vector2D(1, 8);
+                //Logger logger = new ListLogger();
+                //Logger logger = new FileLogger("program.log");
+                //Logger logger = new VisualStudioOutputLogger();
+                Logger logger = new TraceLogger();
+            Trace.Listeners.Add(new TextWriterTraceListener("trace.log"));
 
-            //var space_ship2 = space_ship;
-            //space_ship.Position = new Vector2D(150, -210);
+            var critical_logger = new ListLogger();
+            var student_logger = new Student { Name = "Иванов" };
+            var student_clone = (Student)student_logger.Clone();
 
-            var v1 = new Vector2D(1, 8);
-            Console.WriteLine(v1);
+
+            ((ILogger)student_logger).LogError("Error");
+
+            DoSomeCriticalWork(student_logger);
+
+            logger.LogInformation("Start program");
+
+            for (var i = 0; i < 10; i++)
+                logger.LogInformation($"Do some work {i + 1}");
+
+            logger.LogWarning("Завершение работы приложения");
+
+            //var log_message = ((ListLogger)logger).Messages;
+
+            var random = new Random();
+            var students = new Student[100];
+            for (var i = 0; i < students.Length; i++)
+                students[i] = new Student {Name = $"students {i + 1}", Height = random.Next(150, 211) };
+            Array.Sort(students);
+
+            Trace.Flush();
+
             Console.ReadLine();
-
-            //var v2 = v1;
-
-            //v1.X = 7;
-            //v1.Y = -14;
-
-            //var v3 = v1 + v2;
-            //var v4 = v2 - v1;
-            //var v5 = v4 + 8;
-            //var v6 = -v5;
-
-            var printer = new Printer();
-
-            printer.Print("Hello world!");
-
-            printer = new PrefixPrinter(">>>>>");
-
-            printer.Print("Hello world!");
-
-            printer = new DateTimeLogPrinter();
-            printer.Print("Hello world!");
-
-
-            Console.ReadLine();
+        }
+        public static void DoSomeCriticalWork(ILogger log)
+        {
+            for(var i = 0; i < 10; i++)
+            {
+                log.LogInformation($"Do some very important work {i + 1}");
+            }
         }
     }
-    class Printer
+    public class Student : ILogger, IComparable, ICloneable
     {
-        public Printer()
+        private List<string> _Message = new List<string>();
+
+        public double Height { get; set; } = 175;
+        public string Name { get; set; }
+
+        public List<int> Ratings { get; set; } = new List<int>();
+
+        public int CompareTo(object obj)
         {
+            if(obj is Student)
+            {
+                var other_student = (Student)obj;
+                //return StringComparer.OrdinalIgnoreCase.Compare(Name, other_student.Name);
+                if (Height > other_student.Height)
+                    return +1;
+                else if (Height.Equals(other_student.Height))
+                    return 0;
+                else
+                    return -1;
+            }
+            if (obj is null)
+                throw new ArgumentNullException(nameof(obj), "Попытка сравнения студента с пустотой");
+            throw new ArgumentException("Попытка сравнения студента с " + obj.GetType().Name, nameof(obj));
+
 
         }
-        public virtual void Print(string str) => Console.WriteLine(str);
-    }
-    class PrefixPrinter : Printer
-    {
-        private string _Prefix;
+        public override string ToString() => $"{Name} - {Height}";
 
-        public PrefixPrinter(string Prefix) => _Prefix = Prefix;
+        public void Log(string Message) => Ratings.Add(Message.Length);
 
-        public override void Print(string str)
+        //public void LogError(string Message) => Log("error" + Message);
+
+        public void LogInformation(string Message) => Log("Info:" + Message);
+
+        public void LogWarning(string Message) => Log("warning" + Message);
+
+        void ILogger.LogError(string Message) { Log("Some error" + Message); }
+
+        public object Clone()
         {
-            //Console.WriteLine("{0}{1}", _Prefix, str);
-            base.Print(_Prefix + str);
-        }
-    }
-    class DateTimeLogPrinter : Printer
-    {
-        public override void Print(string str)
-        {
-            Console.Write(DateTime.Now);
-            Console.Write(">>");
-            base.Print(str);
-        }
-    }
-    class FilePrinter : Printer
-    {
-        private string _FileName;
+            //var new_student = new Student
+            //{
+            //    _Messages = new List<string>(_Messages),
+            //    Height = Height,
+            //    Name = Name,
+            //    Ratings = new List<int>(Ratings)
+            //};
+            var new_student = (Student)MemberwiseClone();
+            new_student._Message = new List<string>(_Message);
+            new_student.Ratings = new List<int>(Ratings);
 
-        public FilePrinter(string FileName) => _FileName = FileName;
-
-        public override void Print(string str)
-        {
-            System.IO.File.AppendAllText(_FileName, str);
+            return new_student;
         }
     }
 }
