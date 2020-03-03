@@ -2,13 +2,13 @@
 
 namespace TestConsole
 {
-    readonly struct Vector2D
+    struct Vector2D
     {
-        private readonly double _X;
-        private readonly double _Y;
+        private double _X;
+        private double _Y;
 
-        public double X { get => _X; }
-        public double Y { get => _Y; }
+        public double X { get => _X; set => _X = value; }
+        public double Y { get => _Y; set => _Y = value; }
         public double Length => Math.Sqrt(X * X + Y * Y);
 
         public Vector2D(double X, double Y)

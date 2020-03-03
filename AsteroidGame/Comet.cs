@@ -5,22 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 
-namespace AsteroidGame.VisualObjects
+namespace AsteroidGame
 {
-    class Star : VisualObject
+    class Comet : VisualObject
     {
-        public Star(Point Position, Point Direction, int Size)
-            :base(Position, Direction, new Size(Size, Size))
+        public Comet(Point Position, Point Direction, int Size)
+            : base(Position, Direction, new Size(Size, Size))
         {
 
         }
         public override void Draw(Graphics g)
         {
-            g.DrawLine(Pens.Gray,
+            g.DrawLine(Pens.Yellow,
                 _Position.X, _Position.Y,
                 _Position.X + _Size.Width, _Position.Y + _Size.Height);
-
-            g.DrawLine(Pens.Gray,
+            g.DrawLine(Pens.Yellow,
                 _Position.X + _Size.Width, _Position.Y,
                 _Position.X, _Position.Y + _Size.Height);
         }
