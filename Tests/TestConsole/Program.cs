@@ -11,116 +11,17 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            //TraceLogger trace_logger = null;
-            //try
-            //{
-            //    trace_logger.Log("123");
-            //}
-            //finally
-            //{
-            //    trace_logger.Dispose();
+            Worker[] work = {
+                new WorkerPayHour(200), new WorkerPayHour(300),
+                new WorkerPayMonth(30000), new WorkerPayMonth(40000) };
+            
+            Worker.Sort(work);
 
-            //}
-            using (var trace_logger = new TraceLogger())
-                trace_logger.Log("123");
-
-
-                //Logger logger = new ListLogger();
-                //Logger logger = new FileLogger("program.log");
-                //Logger logger = new VisualStudioOutputLogger();
-                Logger logger = new TraceLogger();
-            Trace.Listeners.Add(new TextWriterTraceListener("trace.log"));
-
-            var critical_logger = new ListLogger();
-            var student_logger = new Student { Name = "Иванов" };
-            var student_clone = (Student)student_logger.Clone();
-
-
-            ((ILogger)student_logger).LogError("Error");
-
-            DoSomeCriticalWork(student_logger);
-
-            logger.LogInformation("Start program");
-
-            for (var i = 0; i < 10; i++)
-                logger.LogInformation($"Do some work {i + 1}");
-
-            logger.LogWarning("Завершение работы приложения");
-
-            //var log_message = ((ListLogger)logger).Messages;
-
-            var random = new Random();
-            var students = new Student[100];
-            for (var i = 0; i < students.Length; i++)
-                students[i] = new Student {Name = $"students {i + 1}", Height = random.Next(150, 211) };
-            Array.Sort(students);
-
-            Trace.Flush();
-
-            Console.ReadLine();
-        }
-        public static void DoSomeCriticalWork(ILogger log)
-        {
-            for(var i = 0; i < 10; i++)
+            foreach (Worker worker in work)
             {
-                log.LogInformation($"Do some very important work {i + 1}");
+                Console.WriteLine($"Рабочие получают следующие зп: {worker.Pay()}");
+                Console.ReadLine();
             }
-        }
-    }
-    public class Student : ILogger, IComparable, ICloneable
-    {
-        private List<string> _Message = new List<string>();
-
-        public double Height { get; set; } = 175;
-        public string Name { get; set; }
-
-        public List<int> Ratings { get; set; } = new List<int>();
-
-        public int CompareTo(object obj)
-        {
-            if(obj is Student)
-            {
-                var other_student = (Student)obj;
-                //return StringComparer.OrdinalIgnoreCase.Compare(Name, other_student.Name);
-                if (Height > other_student.Height)
-                    return +1;
-                else if (Height.Equals(other_student.Height))
-                    return 0;
-                else
-                    return -1;
-            }
-            if (obj is null)
-                throw new ArgumentNullException(nameof(obj), "Попытка сравнения студента с пустотой");
-            throw new ArgumentException("Попытка сравнения студента с " + obj.GetType().Name, nameof(obj));
-
-
-        }
-        public override string ToString() => $"{Name} - {Height}";
-
-        public void Log(string Message) => Ratings.Add(Message.Length);
-
-        //public void LogError(string Message) => Log("error" + Message);
-
-        public void LogInformation(string Message) => Log("Info:" + Message);
-
-        public void LogWarning(string Message) => Log("warning" + Message);
-
-        void ILogger.LogError(string Message) { Log("Some error" + Message); }
-
-        public object Clone()
-        {
-            //var new_student = new Student
-            //{
-            //    _Messages = new List<string>(_Messages),
-            //    Height = Height,
-            //    Name = Name,
-            //    Ratings = new List<int>(Ratings)
-            //};
-            var new_student = (Student)MemberwiseClone();
-            new_student._Message = new List<string>(_Message);
-            new_student.Ratings = new List<int>(Ratings);
-
-            return new_student;
         }
     }
 }
