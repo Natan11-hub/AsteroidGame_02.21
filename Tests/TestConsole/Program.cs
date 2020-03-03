@@ -12,13 +12,14 @@ namespace TestConsole
         static void Main(string[] args)
         {
             Worker[] work = {
-                new WorkerPayHour(70), new WorkerPayHour(50),
+                new WorkerPayHour(200), new WorkerPayHour(300),
                 new WorkerPayMonth(30000), new WorkerPayMonth(40000) };
+            
             Worker.Sort(work);
 
             foreach (Worker worker in work)
             {
-                Console.WriteLine($"Рабочие получают следующие зп: {worker._Pay}");
+                Console.WriteLine($"Рабочие получают следующие зп: {worker.Pay()}");
                 Console.ReadLine();
             }
         }
