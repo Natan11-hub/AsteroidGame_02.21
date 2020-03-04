@@ -50,6 +50,7 @@
     <Compile Include="VisualObjects\CollisionObject.cs" />
     <Compile Include="VisualObjects\Comet.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="VisualObjects\Heal.cs" />
     <Compile Include="VisualObjects\ImageObject.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -86,6 +87,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Heal.bmp" />
+    <None Include="Resources\Heal.jpg" />
     <Content Include="src\star.jpg" />
   </ItemGroup>
   <ItemGroup />

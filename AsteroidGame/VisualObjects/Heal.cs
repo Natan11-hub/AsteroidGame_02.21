@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 
 namespace AsteroidGame.VisualObjects
 {
-    public class StarIm : ImageObject, ICollision
+    public class Heal : ImageObject, ICollision 
     {
-        public int Power { get; set; } = 10;
-        public StarIm(Point Position, Point Direction, int ImageSize) :
-            base(Position, Direction, new Size(ImageSize, ImageSize), Properties.Resources.Star)
+        public int Power { get; set; } = 30;
+        public Heal(Point Position, Point Direction, int ImageSize) 
+            : base(Position, Direction,new Size(ImageSize, ImageSize), Properties.Resources.Heal)
         {
-
         }
 
-        public bool CheckCollision(ICollision obj) => Rect.IntersectsWith(obj.Rect);
+        public bool CheckCollision(ICollision obj)
+        {
+            return Rect.IntersectsWith(obj.Rect);
+        }
+
         public override void Update()
         {
             _Position = new Point(_Position.X + _Direction.X,
@@ -31,5 +34,6 @@ namespace AsteroidGame.VisualObjects
             if (_Position.Y > Game.Height)
                 _Direction = new Point(_Direction.X, -_Direction.Y);
         }
+
     }
 }
