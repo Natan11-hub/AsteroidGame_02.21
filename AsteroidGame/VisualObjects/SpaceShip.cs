@@ -4,29 +4,61 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using AsteroidGame.VisualObjects.Interfaces;
 
 namespace AsteroidGame.VisualObjects
 {
-    public class SpaceShip : VisualObject
+    public class SpaceShip : VisualObject, ICollision
     {
+        public event EventHandler ShipDestroyed;
+
+        private int _Energy = 100;
+        public int Energy => _Energy;
         public SpaceShip(Point Position, Point Direction, Size Size)
             : base(Position, Direction, Size)
         {
-
+            
         }
 
         public override void Draw(Graphics g)
         {
-            throw new NotImplementedException();
+            var rect = Rect;
+            g.FillEllipse(Brushes.Blue, rect);
+            g.DrawEllipse(Pens.Yellow, rect);
         }
         public override void Update()
         {
-            _Position = new Point(_Position.X + _Direction.X,
-                _Position.Y + _Direction.Y);
-            if (_Position.X < 0)
-                _Direction = new Point(-_Direction.X, _Direction.Y);
-            if (_Position.X > Game.Width)
-                _Direction = new Point(-_Direction.X, _Direction.Y);
+         
+        }
+        public void ChangeEnergy(int delta)
+        {
+            _Energy += delta;
+            if(_Energy <= 0)
+            {
+                ShipDestroyed?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        public void MoveUp()
+        {
+            if (_Position.Y > 0)
+                _Position = new Point(_Position.X, _Position.Y - _Direction.Y);
+        }
+        public void MoveDown()
+        {
+            if (_Position.Y < Game.Height)
+                _Position = new Point(Position.X, Position.Y + _Direction.Y);
+        }
+        public bool CheckCollision(ICollision obj)
+        {
+            var is_collision = Rect.IntersectsWith(obj.Rect);
+            if(is_collision && obj is StarIm starIm)
+            {
+                ChangeEnergy(-starIm.Power);
+
+            }
+            return is_collision;
+
         }
     }
 

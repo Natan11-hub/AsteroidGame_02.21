@@ -16,6 +16,7 @@ namespace AsteroidGame
 
         private static BufferedGraphicsContext __Context;
         private static BufferedGraphics __Buffer;
+        private static Timer __Timer;
 
         public static int Width { get; set; }
         public static int Height { get; set; }
@@ -39,6 +40,25 @@ namespace AsteroidGame
             var timer = new Timer { Interval = __FrameTimeout };
             timer.Tick += OnTimerTick;
             timer.Start();
+            __Timer = timer;
+
+            form.KeyDown += OnFormKeyDown;
+        }
+        public static void OnFormKeyDown(object Sender, KeyEventArgs E)
+        {
+            switch (E.KeyCode)
+            {
+                case Keys.ControlKey:
+                    __Bullet = new Bullet(__Ship.Position.Y);
+                    break;
+
+                case Keys.Up:
+                    __Ship.MoveUp();
+                    break;
+                case Keys.Down:
+                    __Ship.MoveDown();
+                    break;
+            }
         }
 
         private static void OnTimerTick(object sender, EventArgs e)
@@ -46,7 +66,7 @@ namespace AsteroidGame
             Update();
             Draw();
         }
-
+        private static SpaceShip __Ship;
         private static VisualObject[] __GameObjects;
         private static Bullet __Bullet;
         //private static VisualObject[] __GameObjectsSmall;
@@ -66,16 +86,6 @@ namespace AsteroidGame
                     new Point(-rnd.Next(0, stars_max_speed)),
                     stars_size));
 
-            const int ellipses_count = 20;
-            const int ellipses_size_x = 20;
-            const int ellipses_size_y = 20;
-
-            for (var i = 0; i < ellipses_count; i++)
-                game_objects.Add(new EllipseObject(
-                    new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
-                    new Point(-rnd.Next(0, stars_max_speed)),
-                    new Size(ellipses_size_x, ellipses_size_y)));
-
             const int starIm_count = 10;
             const int starIm_size = 45;
             const int starIm_max_speed = 20;
@@ -89,9 +99,19 @@ namespace AsteroidGame
 
             __GameObjects = game_objects.ToArray();
             __Bullet = new Bullet(200);
+            __Ship = new SpaceShip(new Point(10, 400), new Point(5, 5), new Size(10, 10));
+            __Ship.ShipDestroyed += OnShipDestroyed;
+        }
+        private static void OnShipDestroyed(object Sender, EventArgs E)
+        {
+            __Timer.Stop();
+            __Buffer.Graphics.Clear(Color.DarkBlue);
+            __Buffer.Graphics.DrawString("GAME OVER", new Font(FontFamily.GenericSerif, 60, FontStyle.Bold), Brushes.Red, 200, 100);
+            __Buffer.Render();
         }
         public static void Draw()
         {
+            if (__Ship.Energy <= 0) return;
             var g = __Buffer.Graphics;
             g.Clear(Color.Black);
 
@@ -101,9 +121,10 @@ namespace AsteroidGame
             foreach (var visual_object in __GameObjects)
                 visual_object?.Draw(g);
 
-            __Bullet.Draw(g);
-            //foreach (var visual_object in __GameObjectsSmall)
-            //    visual_object.Draw(g);
+            __Bullet?.Draw(g);
+            __Ship.Draw(g);
+
+            g.DrawString($"Energy: { __Ship.Energy}", new Font(FontFamily.GenericSansSerif, 14, FontStyle.Italic), Brushes.White, 10, 10);
 
             __Buffer.Render();
         }
@@ -112,22 +133,29 @@ namespace AsteroidGame
             foreach (var visual_object in __GameObjects)
                 visual_object?.Update();
 
-            __Bullet.Update();
-            if (__Bullet.Position.X > Width)
-                __Bullet = new Bullet(new Random().Next(Width));
+            __Bullet?.Update();
+
+
+            //if (__Bullet.Position.X > Width)
+            //    __Bullet = new Bullet(new Random().Next(Width));
             //foreach (var visual_object in __GameObjectsSmall)
             //    visual_object.Update();
             for(var i = 0; i < __GameObjects.Length; i++)
             {
                 var obj = __GameObjects[i];
+
+
                 if (obj is ICollision)
                 {
                     var collision_object = (ICollision)obj;
-                    if (__Bullet.CheckCollision(collision_object))
+                    __Ship.CheckCollision(collision_object);
+
+                    if (__Bullet != null && __Bullet.CheckCollision(collision_object))
                     {
-                        __Bullet = new Bullet(new Random().Next(Width));
+                        __Bullet = null;
+                        //__Bullet = new Bullet(new Random().Next(Width));
                         __GameObjects[i] = null;
-                        MessageBox.Show("Объект уничтожен!", "Столконовение", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show("Объект уничтожен!", "Столкновение", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     }
                 }
             }
