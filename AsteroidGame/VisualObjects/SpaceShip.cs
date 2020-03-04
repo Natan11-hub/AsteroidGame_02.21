@@ -57,6 +57,10 @@ namespace AsteroidGame.VisualObjects
                 ChangeEnergy(-starIm.Power);
 
             }
+            else if(is_collision && obj is Heal heal)
+            {
+                ChangeEnergy(heal.Power);
+            }
             return is_collision;
 
         }

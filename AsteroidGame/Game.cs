@@ -10,8 +10,11 @@ using AsteroidGame.VisualObjects.Interfaces;
 
 namespace AsteroidGame
 {
+    public delegate int Count(int x);
     static class Game
     {
+        public static int count_Stars = 0;
+
         private const int __FrameTimeout = 10;
 
         private static BufferedGraphicsContext __Context;
@@ -69,6 +72,7 @@ namespace AsteroidGame
         private static SpaceShip __Ship;
         private static VisualObject[] __GameObjects;
         private static Bullet __Bullet;
+        private static Heal __Heal;
         //private static VisualObject[] __GameObjectsSmall;
         public static void Load()
         {
@@ -97,10 +101,21 @@ namespace AsteroidGame
                     new Point(-rnd.Next(0, starIm_max_speed)),
                     starIm_size));
 
+            const int heal_count = 2;
+            const int heal_size = 30;
+            const int heal_max_speed = 20;
+
+            for (var i = 0; i < heal_count; i++)
+                game_objects.Add(new Heal(
+                    new Point(rnd.Next(0, Width), rnd.Next(0, Height)),
+                    new Point(-rnd.Next(0, heal_max_speed)),
+                    heal_size));
+
             __GameObjects = game_objects.ToArray();
             __Bullet = new Bullet(200);
             __Ship = new SpaceShip(new Point(10, 400), new Point(5, 5), new Size(10, 10));
             __Ship.ShipDestroyed += OnShipDestroyed;
+            
         }
         private static void OnShipDestroyed(object Sender, EventArgs E)
         {
@@ -125,6 +140,7 @@ namespace AsteroidGame
             __Ship.Draw(g);
 
             g.DrawString($"Energy: { __Ship.Energy}", new Font(FontFamily.GenericSansSerif, 14, FontStyle.Italic), Brushes.White, 10, 10);
+            g.DrawString($"Уничтожено объектов: { count_Stars}", new Font(FontFamily.GenericSansSerif, 14, FontStyle.Italic), Brushes.White, 10, 35);
 
             __Buffer.Render();
         }
@@ -152,10 +168,11 @@ namespace AsteroidGame
 
                     if (__Bullet != null && __Bullet.CheckCollision(collision_object))
                     {
+                        count_Stars++;
                         __Bullet = null;
                         //__Bullet = new Bullet(new Random().Next(Width));
                         __GameObjects[i] = null;
-                        MessageBox.Show("Объект уничтожен!", "Столкновение", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        MessageBox.Show("Объект уничтожен!", "Столкновение", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);                       
                     }
                 }
             }
