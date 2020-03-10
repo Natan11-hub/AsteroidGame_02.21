@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindowForHomeWork" Height="450" Width="800">
 	<Grid>
+		<ComboBox x:Name="comboBox" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" SelectionChanged="comboBox_SelectionChanged" Margin="456,46,136,335" Height="38">
+			<ComboBoxItem>Frontend</ComboBoxItem>
+			<ComboBoxItem>Backend</ComboBoxItem>
+			<ComboBoxItem x:Name="combobox">Develop</ComboBoxItem>
+		</ComboBox>
 		<ListBox Margin="10,10,371,0" Name="lbEmployee" SelectionMode="Multiple" 
                  SelectionChanged="lbEmployee_SelectionChanged" VerticalAlignment="Top" Height="250"/>
 		<Button Margin="10" Height="25" Width="70" VerticalAlignment="Bottom" Click="Button_Click" >Добавить</Button>
@@ -14,6 +19,6 @@
 		<TextBox x:Name="TextID" HorizontalAlignment="Left" Height="23" Margin="10,293,0,0" TextWrapping="Wrap" Text="Введите ID" VerticalAlignment="Top" Width="120"/>
 		<TextBox x:Name="TextAge" HorizontalAlignment="Left" Height="23" Margin="10,321,0,0" TextWrapping="Wrap" Text="Введите возраст" VerticalAlignment="Top" Width="120"/>
 		<TextBox x:Name="TextSalary" HorizontalAlignment="Left" Height="23" Margin="10,349,0,0" TextWrapping="Wrap" Text="Введите заработок" VerticalAlignment="Top" Width="120"/>
-		<TextBox x:Name="TextDepartment" HorizontalAlignment="Left" Height="23" Margin="10,377,0,0" TextWrapping="Wrap" Text="Введите отдел" VerticalAlignment="Top" Width="120"/>
+		<TextBox x:Name="TextDepartment" HorizontalAlignment="Left" Height="23" Margin="10,377,0,0" TextWrapping="Wrap" Text="Выберите отдел" VerticalAlignment="Top" Width="120"/>
 	</Grid>
 </Window>

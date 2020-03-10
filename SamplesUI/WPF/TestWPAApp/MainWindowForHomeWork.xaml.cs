@@ -53,24 +53,17 @@ namespace TestWPAApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            items.Add(new Employee() {
+            items.Add(new Employee()
+            {
                 Id = Convert.ToInt32(TextID.Text),
                 Name = TextName.Text,
                 Age = Convert.ToInt32(TextAge.Text),
                 Salary = Convert.ToInt32(TextSalary.Text),
-                Department = TextDepartment.Text});
-            Clear();
-            
-            
+                Department = comboBox.Text
+            });
+
         }
-        public void Clear()
-        {
-            TextName = null;
-            TextID.Text = null;
-            TextSalary = null;
-            TextAge = null;
-            TextDepartment = null;
-        }
+        
     }
 
     public class Employee
