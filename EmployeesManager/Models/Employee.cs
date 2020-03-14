@@ -1,22 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmployeesManager.Models
 {
     class Employee : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public int Id { get; set; }
 
-        private string _Name { get; set; }
+        private string _Name;
+
+        private string _SurName;
+
+        private string _Patronymic;
+
+        private string _Department;
+
+        public int Id { get; set; }
 
         public string Name
         {
-            get => Name;
+            get => _Name;
             set
             {
                 _Name = value;
@@ -24,14 +27,39 @@ namespace EmployeesManager.Models
             }
         }
 
-        public string SurName { get; set; }
+        public string SurName
+        {
+            get => _SurName;
+            set
+            {
+                _SurName = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SurName)));
+            }
+        }
 
-        public string Patronymic { get; set; }
+        public string Patronymic
+        {
+            get => _Patronymic;
+            set
+            {
+                _Patronymic = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Patronymic)));
+            }
+        }
 
         public DateTime DayOfBirth { get; set; }
 
-        public int Age => (int)Math.Floor((DateTime.Now - DayOfBirth).TotalDays / 365);
+        public string Department
+        {
+            get => _Department;
+            set
+            {
+                _Department = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Department)));
+            }
+        }
 
+        public int Age => (int)Math.Floor((DateTime.Now - DayOfBirth).TotalDays / 365);
 
         public override string ToString() => $"Сотрудник[{Id}]:{SurName}";
     }
