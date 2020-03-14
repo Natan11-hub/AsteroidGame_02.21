@@ -1,0 +1,18 @@
+﻿<Window x:Class="BindingsTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BindingsTest"
+        mc:Ignorable="d"
+        Title="{Binding ElementName=DataBox, Path=Text}" Height="450" Width="800">
+    <Grid>
+		<TextBox Name="DataBox" HorizontalAlignment="Left" Height="23" Margin="25,60,0,0" TextWrapping="Wrap" Text="123" VerticalAlignment="Top" Width="120"/>
+		<TextBlock Text = "{Binding Value, ElementName=BarOfProgress, StringFormat='Value={0:p2}'}" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="25,90" />
+		<Slider VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Margin="25,110" 
+				Value="{Binding Text, ElementName=DataBox}" Maximum="100" />
+		<ProgressBar x:Name="BarOfProgress" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" Height="16" Margin="24,34,0,0"
+					 Value="{Binding Text, ElementName =DataBox}"/>
+
+	</Grid>
+</Window>
