@@ -4,15 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using WpfApp1.ViewModels.Base;
 
 namespace WpfApp1.ViewModels
 {
-    class MainWindowViewModel
+    class MainWindowViewModel : ViewModel
     {
         private Timer _Timer;
         public string Title { get; set; } = "Заголовок окна проекта MVVM";
 
-        public DateTime CurrentTime { get; set; }
+        private DateTime _CurrentTime;
+
+        public DateTime CurrentTime
+        {
+            get => _CurrentTime;
+            set
+            {
+                if (Equals(_CurrentTime, value)) return;
+                _CurrentTime = value;
+                OnPropertyChanged();
+            }
+        }
 
         public MainWindowViewModel()
         {
