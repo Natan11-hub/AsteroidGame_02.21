@@ -36,10 +36,21 @@ namespace WpfApp1.ViewModels
         public DateTime BirthDay
         {
             get => _BirthDay;
-            set => Set(ref _BirthDay, value);
+            set
+            {
+                if (Set(ref _BirthDay, value))
+                    OnPropertyChanged(nameof(Age));
+            }
         }
 
         public int Age => (int)Math.Floor((DateTime.Now - BirthDay).TotalDays / 365);
 
+        private DepartamentViewModel _Departament;
+
+        public DepartamentViewModel Departament
+        {
+            get => _Departament;
+            set => Set(ref _Departament, value);
+        }
     }
 }
