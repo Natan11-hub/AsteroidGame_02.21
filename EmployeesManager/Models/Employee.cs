@@ -15,6 +15,8 @@ namespace EmployeesManager.Models
 
         private string _Department;
 
+        public virtual Departament Departament { get; set; }
+
         public int Id { get; set; }
 
         public string Name
